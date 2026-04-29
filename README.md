@@ -42,7 +42,7 @@ Copy `boards/` and `variants/` into a Meshtastic firmware checkout, then run one
 The build scripts expect PlatformIO at:
 
 ```text
-C:\Users\sodo\.platformio\penv\Scripts\platformio.exe
+C:\Users\x\.platformio\penv\Scripts\platformio.exe
 ```
 
 ## Flash
