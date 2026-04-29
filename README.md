@@ -30,29 +30,38 @@ Both variants use the same SPI and control pins:
 - `firmware/` contains ready-to-flash factory binaries.
 - `scripts/` contains helper PowerShell scripts for rebuilding inside a Meshtastic firmware checkout.
 
-## Build
-
-Copy `boards/` and `variants/` into a Meshtastic firmware checkout, then run one of:
-
-```powershell
-.\scripts\build-llcc68.ps1
-.\scripts\build-sx1262.ps1
-```
-
-The build scripts expect PlatformIO at:
-
-```text
-C:\Users\sodo\.platformio\penv\Scripts\platformio.exe
-```
-
 ## Flash
 
 The files in `firmware/` are combined factory images and should be flashed at offset `0x0`.
 
-Example:
+1. Download the correct `.bin` file from `firmware/`.
+2. Connect the ESP32-S3 DevKitC and put it in bootloader mode if it does not enter automatically.
+3. Flash with `esptool.py`, replacing `COMx` with your serial port.
+
+LLCC68:
 
 ```powershell
 esptool.py --chip esp32s3 --port COMx --baud 921600 write_flash 0x0 firmware\esp32-s3-devkitc-n16r8-llcc68.bin
 ```
 
-Replace `COMx` with the ESP32-S3 serial port.
+SX1262:
+
+```powershell
+esptool.py --chip esp32s3 --port COMx --baud 921600 write_flash 0x0 firmware\esp32-s3-devkitc-n16r8-sx1262.bin
+```
+
+## Checksums
+
+| Firmware | SHA-256 |
+| --- | --- |
+| `esp32-s3-devkitc-n16r8-llcc68.bin` | `857437CDB6DBCD8AC22C2A9776AED28421AB746F690626EF5F830887007D88AD` |
+| `esp32-s3-devkitc-n16r8-sx1262.bin` | `96DEC00460303561857665A3F2986A86017EDE4A316F1C7F9104D8AA12B8CAFA` |
+
+## Build
+
+This repository is mainly for flashing the included binaries. To rebuild from source, copy `boards/` and `variants/` into a Meshtastic firmware checkout with PlatformIO installed, then run one of:
+
+```powershell
+platformio run -e esp32-s3-devkitc-n16r8-llcc68
+platformio run -e esp32-s3-devkitc-n16r8-sx1262
+```
