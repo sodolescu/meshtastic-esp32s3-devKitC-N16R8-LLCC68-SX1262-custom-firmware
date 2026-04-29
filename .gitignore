@@ -1,0 +1,12 @@
+.pio/
+.vscode/
+.cache/
+*.log
+*.tmp
+*.elf
+*.map
+*.o
+__pycache__/
+
+# Keep the ready-to-flash firmware binaries in this repo.
+!firmware/*.bin
