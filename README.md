@@ -54,8 +54,12 @@ esptool.py --chip esp32s3 --port COMx --baud 921600 write_flash 0x0 firmware\esp
 
 | Firmware | SHA-256 |
 | --- | --- |
-| `esp32-s3-devkitc-n16r8-llcc68.bin` | `857437CDB6DBCD8AC22C2A9776AED28421AB746F690626EF5F830887007D88AD` |
-| `esp32-s3-devkitc-n16r8-sx1262.bin` | `96DEC00460303561857665A3F2986A86017EDE4A316F1C7F9104D8AA12B8CAFA` |
+| `esp32-s3-devkitc-n16r8-llcc68.bin` | `DA735B2228616D0123AD627A2E7BD4DCC6B4C128F51E85BBA536803E8E4A8240` |
+| `esp32-s3-devkitc-n16r8-sx1262.bin` | `87F553761B182310EF5B453CFBD4C586DE05F331AD78B5E43ABEE82CC829F8BF` |
+
+## Radio Notes
+
+These variants enable DIO2 RF switching and optional DIO3 TCXO power for SX126x-family modules. This is required by many bare LLCC68/SX1262 modules even when DIO2/DIO3 are not wired to ESP32 GPIO pins.
 
 ## Build
 
