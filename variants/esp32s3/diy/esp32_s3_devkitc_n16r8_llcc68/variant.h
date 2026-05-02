@@ -25,7 +25,5 @@
 #define SX126X_RXEN 5
 #define SX126X_TXEN 6
 
-// TCXO_OPTIONAL lets Meshtastic try TCXO power and fall back for XTAL modules.
-#define SX126X_DIO3_TCXO_VOLTAGE 1.8
-#define TCXO_OPTIONAL
+// DIO3 is not wired for TCXO power on this build.
 #define SX126X_MAX_POWER 22

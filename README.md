@@ -54,12 +54,27 @@ SX1262:
 esptool.py --chip esp32s3 --port COMx --baud 921600 write_flash 0x0 firmware\esp32-s3-devkitc-n16r8-sx1262.bin
 ```
 
+## Required LoRa Setup
+
+After a factory flash, Meshtastic starts with `lora.region` unset. Set the legal region for your country on both boards before transmitting. For US testing with one LLCC68 board and one SX1262 board, use the same custom modem profile on both boards:
+
+```powershell
+meshtastic --port COMx --set lora.region US
+meshtastic --port COMx --set lora.use_preset false
+meshtastic --port COMx --set lora.bandwidth 125
+meshtastic --port COMx --set lora.spread_factor 9
+meshtastic --port COMx --set lora.coding_rate 5
+meshtastic --port COMx --reboot
+```
+
+`LONG_FAST` in the US region does not work as a shared LLCC68/SX1262 profile on this build because the LLCC68 path rejects the wide/SF11 settings and falls back to a different effective bitrate. The custom profile above was verified both directions between the two boards.
+
 ## Checksums
 
 | Firmware | SHA-256 |
 | --- | --- |
-| `esp32-s3-devkitc-n16r8-llcc68.bin` | `6DC033570932648A126E9903CFA198CC181B6916638F5E08AE1D0F91E63C4032` |
-| `esp32-s3-devkitc-n16r8-sx1262.bin` | `3C490E3C41B40CD41B7D120B1791A6CAF4BB1F57EF0ACD7064AD4003F41FC1AD` |
+| `esp32-s3-devkitc-n16r8-llcc68.bin` | `52C85F038DCC1FFF622D06F861A5FF6197525A203796DD4CA45148EA6D732E75` |
+| `esp32-s3-devkitc-n16r8-sx1262.bin` | `88E36E44C175F7745FA8C0CDC51454D79F9EA2F2DF4EDD090F099A24960B56D0` |
 
 ## Radio Notes
 
@@ -70,12 +85,13 @@ These variants use explicit MCU-controlled RF switching for modules with `RXEN` 
 #define SX126X_TXEN 6
 ```
 
-Optional DIO3 TCXO power is enabled with fallback for XTAL modules:
+DIO3 TCXO power is not enabled in these binaries:
 
 ```c
-#define SX126X_DIO3_TCXO_VOLTAGE 1.8
-#define TCXO_OPTIONAL
+// DIO3 is not wired for TCXO power on this build.
 ```
+
+The board definitions use UART serial (`ARDUINO_USB_CDC_ON_BOOT=0`) so `meshtastic --port COMx` works through the DevKitC USB-UART bridge.
 
 ## Build
 
