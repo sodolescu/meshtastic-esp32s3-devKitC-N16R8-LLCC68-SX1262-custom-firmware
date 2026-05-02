@@ -22,6 +22,10 @@ Both variants use the same SPI and control pins:
 | NRST / RESET | GPIO 12 |
 | BUSY | GPIO 13 |
 | DIO1 | GPIO 14 |
+| RXEN | GPIO 5 |
+| TXEN | GPIO 6 |
+
+DIO2 is not connected to the ESP32 in this build. RF switching is controlled explicitly by the ESP32 using `RXEN` and `TXEN`.
 
 ## Files
 
@@ -54,12 +58,24 @@ esptool.py --chip esp32s3 --port COMx --baud 921600 write_flash 0x0 firmware\esp
 
 | Firmware | SHA-256 |
 | --- | --- |
-| `esp32-s3-devkitc-n16r8-llcc68.bin` | `DA735B2228616D0123AD627A2E7BD4DCC6B4C128F51E85BBA536803E8E4A8240` |
-| `esp32-s3-devkitc-n16r8-sx1262.bin` | `87F553761B182310EF5B453CFBD4C586DE05F331AD78B5E43ABEE82CC829F8BF` |
+| `esp32-s3-devkitc-n16r8-llcc68.bin` | `6DC033570932648A126E9903CFA198CC181B6916638F5E08AE1D0F91E63C4032` |
+| `esp32-s3-devkitc-n16r8-sx1262.bin` | `3C490E3C41B40CD41B7D120B1791A6CAF4BB1F57EF0ACD7064AD4003F41FC1AD` |
 
 ## Radio Notes
 
-These variants enable DIO2 RF switching and optional DIO3 TCXO power for SX126x-family modules. This is required by many bare LLCC68/SX1262 modules even when DIO2/DIO3 are not wired to ESP32 GPIO pins.
+These variants use explicit MCU-controlled RF switching for modules with `RXEN` and `TXEN` pins:
+
+```c
+#define SX126X_RXEN 5
+#define SX126X_TXEN 6
+```
+
+Optional DIO3 TCXO power is enabled with fallback for XTAL modules:
+
+```c
+#define SX126X_DIO3_TCXO_VOLTAGE 1.8
+#define TCXO_OPTIONAL
+```
 
 ## Build
 

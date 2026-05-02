@@ -20,9 +20,12 @@
 #define SX126X_BUSY LORA_BUSY
 #define SX126X_RESET LORA_RESET
 
-// Many SX126x/LLCC68 modules use DIO2 internally for RF TX/RX switching.
+// Explicit RF switch control for modules with RXEN/TXEN pins.
+// Wire RXEN to GPIO5 and TXEN to GPIO6. DIO2 is not connected to ESP32.
+#define SX126X_RXEN 5
+#define SX126X_TXEN 6
+
 // TCXO_OPTIONAL lets Meshtastic try TCXO power and fall back for XTAL modules.
-#define SX126X_DIO2_AS_RF_SWITCH
 #define SX126X_DIO3_TCXO_VOLTAGE 1.8
 #define TCXO_OPTIONAL
 #define SX126X_MAX_POWER 22
